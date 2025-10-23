@@ -123,9 +123,14 @@ const Home = () => {
               <Button size="lg" variant="secondary" asChild className="text-lg">
                 <Link to="/contactos">Contactar Agora</Link>
               </Button>
-              <Button size="lg" variant="outline" asChild className="text-lg border-white/30 text-white hover:bg-white/10">
+              <Button 
+                  size="lg" 
+                  variant="outline" 
+                  asChild 
+                  className="text-lg bg-transparent border-white text-white hover:bg-white/20 hover:border-white" // MODIFICADO
+              >
                 <a href="tel:962814314">Ligar: 962 814 314</a>
-              </Button>
+              </Button>   
             </div>
           </div>
         </div>

@@ -3,6 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Função auxiliar para rolar para o topo
+const scrollToTop = () => {
+  window.scrollTo(0, 0);
+};
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
@@ -17,10 +22,23 @@ const Header = () => {
     { name: "Contactos", path: "/contactos" },
   ];
 
+  // Função para lidar com o clique nos links de navegação
+  const handleNavLinkClick = () => {
+    // 1. Rola para o topo (isto é ativado imediatamente)
+    scrollToTop();
+    // 2. Fecha o menu (apenas no mobile)
+    setIsMenuOpen(false);
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2 font-bold text-xl">
+        {/* LOGO: Adiciona a função de clique */}
+        <Link 
+          to="/" 
+          onClick={handleNavLinkClick}
+          className="flex items-center gap-2 font-bold text-xl"
+        >
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
             <Leaf className="h-6 w-6 text-primary-foreground" />
           </div>
@@ -33,6 +51,8 @@ const Header = () => {
             <Link
               key={link.path}
               to={link.path}
+              // LINKS DESKTOP: Adiciona a função de clique
+              onClick={handleNavLinkClick} 
               className={`text-sm font-medium transition-colors hover:text-primary ${
                 isActive(link.path) ? "text-primary" : "text-muted-foreground"
               }`}
@@ -41,7 +61,10 @@ const Header = () => {
             </Link>
           ))}
           <Button asChild className="ml-4">
-            <Link to="/contactos">Pedir Orçamento</Link>
+            {/* BOTÃO PEDIR ORÇAMENTO DESKTOP: Adiciona a função de clique */}
+            <Link to="/contactos" onClick={handleNavLinkClick}>
+              Pedir Orçamento
+            </Link>
           </Button>
         </nav>
 
@@ -66,7 +89,8 @@ const Header = () => {
             <Link
               key={link.path}
               to={link.path}
-              onClick={() => setIsMenuOpen(false)}
+              // LINKS MOBILE: Usa a função de clique combinada
+              onClick={handleNavLinkClick}
               className={`block py-2 text-sm font-medium transition-colors hover:text-primary ${
                 isActive(link.path) ? "text-primary" : "text-muted-foreground"
               }`}
@@ -75,7 +99,8 @@ const Header = () => {
             </Link>
           ))}
           <Button asChild className="w-full mt-4">
-            <Link to="/contactos" onClick={() => setIsMenuOpen(false)}>
+            {/* BOTÃO PEDIR ORÇAMENTO MOBILE: Usa a função de clique combinada */}
+            <Link to="/contactos" onClick={handleNavLinkClick}>
               Pedir Orçamento
             </Link>
           </Button>

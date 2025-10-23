@@ -46,7 +46,6 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-
           {/* Contact Info */}
           <div>
             <h3 className="font-semibold text-lg mb-4">Contactos</h3>
@@ -59,11 +58,16 @@ const Footer = () => {
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                <span className="text-muted-foreground">
+                <a
+                  href="https://www.google.com/maps?q=Centro+Comercial+Santiago,+R.+Lúcio+Borges+da+Costa,+Loja+12,+2950-255+Palmela"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   Centro Comercial Santiago<br />
                   R. Lúcio Borges da Costa, Loja 12<br />
                   2950-255 Palmela
-                </span>
+                </a>
               </li>
               <li className="flex items-start gap-2">
                 <Clock className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />

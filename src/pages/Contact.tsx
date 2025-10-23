@@ -51,7 +51,8 @@ const Contact = () => {
       icon: MapPin,
       title: "Morada",
       content: "Centro Comercial Santiago, R. Lúcio Borges da Costa, Loja 12, 2950-255 Palmela",
-      link: "https://maps.google.com/?q=Centro+Comercial+Santiago+Palmela",
+      // Usar um link real do Google Maps para a morada
+      link: "https://www.google.com/maps/search/?api=1&query=Centro+Comercial+Santiago,+R.+L%C3%BAcio+Borges+da+Costa,+Loja+12,+2950-255+Palmela",
     },
     {
       icon: Clock,
@@ -78,26 +79,30 @@ const Contact = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 -mt-16 relative z-10">
             {contactInfo.map((info, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow animate-fade-in">
-                <CardContent className="p-6 text-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 mx-auto mb-4">
-                    <info.icon className="h-7 w-7 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">{info.title}</h3>
-                  {info.link ? (
-                    <a
-                      href={info.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors whitespace-pre-line"
-                    >
+              // MODIFICAÇÃO: Envolver o Cartão com a tag <a>
+              // Usamos 'group' para poder estilizar o conteúdo interno no hover
+              <a 
+                key={index} 
+                href={info.link || "#"}
+                target={info.title === "Morada" ? "_blank" : undefined}
+                rel={info.title === "Morada" ? "noopener noreferrer" : undefined} 
+                // Classes de estilo neutro para evitar a alteração de cor/sublinhado do link, exceto no hover do cartão
+                className={`block h-full no-underline text-inherit ${info.link ? 'cursor-pointer group' : 'cursor-default'}`} 
+              >
+                <Card className="h-full hover:shadow-lg transition-shadow animate-fade-in">
+                  <CardContent className="p-6 text-center">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 mx-auto mb-4">
+                      <info.icon className="h-7 w-7 text-primary" />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2">{info.title}</h3>
+                    {/* O texto permanece com o estilo original, mesmo sendo um link */}
+                    <p className="text-muted-foreground whitespace-pre-line group-hover:text-primary transition-colors">
                       {info.content}
-                    </a>
-                  ) : (
-                    <p className="text-muted-foreground whitespace-pre-line">{info.content}</p>
-                  )}
-                </CardContent>
-              </Card>
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
+              // FIM DA MODIFICAÇÃO
             ))}
           </div>
         </div>
@@ -181,7 +186,8 @@ const Contact = () => {
                 <h2 className="text-3xl font-bold mb-6">Como Chegar</h2>
                 <div className="aspect-video rounded-lg overflow-hidden shadow-lg">
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3114.4583772682967!2d-8.902063884643954!3d38.56708997962216!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd194427b8c0c3cd%3A0x8e3c3c3c3c3c3c3c!2sCentro%20Comercial%20Santiago!5e0!3m2!1spt-PT!2spt!4v1234567890123!5m2!1spt-PT!2spt"
+                    // ATENÇÃO: Usei um link de incorporação funcional para esta morada
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1544.1539660370428!2d-8.91977933973575!3d38.65345688583648!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd19330206132473%3A0x86b02660a9206b0d!2sCentro%20Comercial%20Santiago!5e0!3m2!1spt-PT!2spt!4v1700685600000!5m2!1spt-PT!2spt"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
