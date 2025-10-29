@@ -89,7 +89,7 @@ Função/Área a que me candidato: ${formData.role || "não especificada"}
 Mensagem:
 ${formData.message || "—"}
 
-⚠️ Vou anexar o meu CV (e carta de apresentação, se aplicável) antes de enviar este e-mail.
+⚠️ Aqui anexo o meu CV (e carta de apresentação, se aplicável) no seguimento deste e-mail.
 
 Com os melhores cumprimentos,
 ${formData.name}`
