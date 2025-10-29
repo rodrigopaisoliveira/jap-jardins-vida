@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FileText, Upload, Mail, Phone, ShieldCheck, Send, Briefcase } from "lucide-react";
+import { FileText, Mail, Phone, ShieldCheck, Send, Briefcase, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,17 +12,8 @@ type FormState = {
   phone: string;
   role: string;
   message: string;
-  cvFile: File | null;
-  coverFile: File | null;
   consent: boolean;
 };
-
-const MAX_FILE_MB = 10;
-const ACCEPTED = [
-  "application/pdf",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-];
 
 const Curriculos = () => {
   const { toast } = useToast();
@@ -33,8 +24,6 @@ const Curriculos = () => {
     phone: "",
     role: "",
     message: "",
-    cvFile: null,
-    coverFile: null,
     consent: false,
   });
 
@@ -45,33 +34,8 @@ const Curriculos = () => {
       phone: "",
       role: "",
       message: "",
-      cvFile: null,
-      coverFile: null,
       consent: false,
     });
-
-  const validateFile = (file: File | null, label: string) => {
-    if (!file) return true;
-    const sizeOk = file.size <= MAX_FILE_MB * 1024 * 1024;
-    const typeOk = ACCEPTED.includes(file.type);
-    if (!sizeOk) {
-      toast({
-        title: `Ficheiro muito grande (${label})`,
-        description: `O limite é ${MAX_FILE_MB}MB.`,
-        variant: "destructive",
-      });
-      return false;
-    }
-    if (!typeOk) {
-      toast({
-        title: `Tipo de ficheiro inválido (${label})`,
-        description: "Aceitamos PDF, DOC ou DOCX.",
-        variant: "destructive",
-      });
-      return false;
-    }
-    return true;
-  };
 
   const onChangeText = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -79,40 +43,42 @@ const Curriculos = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const onChangeFile =
-    (key: "cvFile" | "coverFile") => (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0] ?? null;
-      setFormData((prev) => ({ ...prev, [key]: file }));
-    };
-
   const onChangeConsent = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, consent: e.target.checked }));
   };
 
- const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
-
-  // Validações básicas
-  if (!formData.consent) {
-    toast({
-      title: "Consentimento necessário",
-      description:
-        "Para submeter os seus dados, confirme o tratamento de dados pessoais.",
-      variant: "destructive",
-    });
-    return;
+  function openMailSafely(mailtoLink: string, onFail?: () => void) {
+    try {
+      window.location.href = mailtoLink;
+      const a = document.createElement("a");
+      a.href = mailtoLink;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => onFail?.(), 1200);
+    } catch {
+      onFail?.();
+    }
   }
 
-  if (!validateFile(formData.cvFile, "CV")) return;
-  if (formData.coverFile && !validateFile(formData.coverFile, "Carta de Apresentação")) return;
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
-  // Endereço de destino (coloca o e-mail real da empresa)
-  const destinatario = "info@japjardins.pt";
-  const assunto = encodeURIComponent("Candidatura - JAP Jardins com Vida");
+    if (!formData.consent) {
+      toast({
+        title: "Consentimento necessário",
+        description:
+          "Para submeter os seus dados, confirme o tratamento de dados pessoais.",
+        variant: "destructive",
+      });
+      return;
+    }
 
-  // Corpo do email
-  const corpo = encodeURIComponent(
-    `Olá JAP Jardins com Vida,
+    const destinatario = "info@japjardins.pt"; // <-- substitui se necessário
+    const assunto = encodeURIComponent("Candidatura - JAP Jardins com Vida");
+    const corpo = encodeURIComponent(
+      `Olá JAP Jardins com Vida,
 
 O meu nome é ${formData.name}.
 Email: ${formData.email}
@@ -123,59 +89,31 @@ Função/Área a que me candidato: ${formData.role || "não especificada"}
 Mensagem:
 ${formData.message || "—"}
 
-Anexei o meu currículo${formData.coverFile ? " e a minha carta de apresentação" : ""} a este e-mail.
+⚠️ Vou anexar o meu CV (e carta de apresentação, se aplicável) antes de enviar este e-mail.
 
 Com os melhores cumprimentos,
 ${formData.name}`
-  );
+    );
 
-  // Abre o cliente de e-mail com os dados preenchidos
-const mailtoLink = `mailto:${destinatario}?subject=${assunto}&body=${corpo}`;
+    const mailtoLink = `mailto:${destinatario}?subject=${assunto}&body=${corpo}`;
 
-openMailSafely(mailtoLink, () => {
-  toast({
-    title: "Não abriu o cliente de e-mail?",
-    description:
-      "Clique aqui para abrir manualmente: " +
-      `mailto:${destinatario}?subject=${assunto}&body=${corpo}`,
-  });
-});
+    toast({
+      title: "A preparar e-mail…",
+      description:
+        "Será aberto o seu cliente de e-mail. Anexe o seu CV antes de enviar.",
+    });
 
-  // Mostra um toast visual
-  toast({
-    title: "A preparar email…",
-    description:
-      "O seu cliente de email será aberto para enviar a candidatura. Lembre-se de anexar o seu CV antes de enviar!",
-  });
+    openMailSafely(mailtoLink, () => {
+      toast({
+        title: "Não abriu o cliente de e-mail?",
+        description:
+          "Verifique as definições do seu navegador ou copie o endereço info@japjardins.pt.",
+        variant: "destructive",
+      });
+    });
 
-  reset();
-};
-
-function openMailSafely(mailtoLink: string, onFail?: () => void) {
-  try {
-    // Tenta abrir o e-mail via navegador
-    window.location.href = mailtoLink;
-
-    // Alguns browsers bloqueiam — tentamos via click programático também
-    const a = document.createElement("a");
-    a.href = mailtoLink;
-    a.style.display = "none";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    // Se após ~1s o utilizador ainda está na mesma página, mostra fallback
-    setTimeout(() => {
-      onFail?.();
-    }, 1200);
-  } catch {
-    onFail?.();
-  }
-}
-
-
-
-  const prettyFileName = (file: File | null) => (file ? file.name : "Nenhum ficheiro selecionado");
+    reset();
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -241,8 +179,26 @@ function openMailSafely(mailtoLink: string, onFail?: () => void) {
               <h2 className="text-3xl font-bold mb-6">Submeter Candidatura</h2>
               <p className="text-muted-foreground mb-8">
                 Preencha o formulário — será aberto um e-mail já preparado para a JAP Jardins com Vida.
-                Lembre-se de anexar o seu CV (PDF, DOC ou DOCX – até {MAX_FILE_MB}MB) antes de enviar.
+                <br />
+                <span className="font-medium">Lembre-se de anexar o seu CV</span> (e carta de apresentação, se aplicável) antes de enviar.
               </p>
+
+              {/* Aviso de anexos */}
+              <Card className="mb-6 border-primary/30">
+                <CardContent className="p-4 flex items-start gap-3">
+                  <div className="mt-1">
+                    <Upload className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-medium">Anexos no e-mail</p>
+                    <p className="text-sm text-muted-foreground">
+                      Por proteção de dados, o envio é feito diretamente por e-mail.
+                      Quando submeter o formulário, será automaticamente aberto um e-mail preparado
+                      para a JAP Jardins com Vida — basta anexar o seu <strong>CV</strong> e, se desejar, a sua
+                      <strong> carta de apresentação</strong>.                    </p>
+                  </div>
+                </CardContent>
+              </Card>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
@@ -325,43 +281,6 @@ function openMailSafely(mailtoLink: string, onFail?: () => void) {
                   />
                 </div>
 
-                {/* CV */}
-                <div>
-                  <label className="block text-sm font-medium mb-2">Currículo (CV) *</label>
-                  <div className="flex items-center gap-3">
-                    <Input
-                      id="cvFile"
-                      name="cvFile"
-                      type="file"
-                      accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                      onChange={onChangeFile("cvFile")}
-                      required
-                    />
-                    <Upload className="h-5 w-5 text-muted-foreground" aria-hidden />
-                  </div>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {prettyFileName(formData.cvFile)}
-                  </p>
-                </div>
-
-                {/* Carta de Apresentação (opcional) */}
-                <div>
-                  <label className="block text-sm font-medium mb-2">Carta de Apresentação (opcional)</label>
-                  <div className="flex items-center gap-3">
-                    <Input
-                      id="coverFile"
-                      name="coverFile"
-                      type="file"
-                      accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                      onChange={onChangeFile("coverFile")}
-                    />
-                    <FileText className="h-5 w-5 text-muted-foreground" aria-hidden />
-                  </div>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {prettyFileName(formData.coverFile)}
-                  </p>
-                </div>
-
                 {/* Consentimento */}
                 <div className="flex items-start gap-3">
                   <input
@@ -381,10 +300,6 @@ function openMailSafely(mailtoLink: string, onFail?: () => void) {
                   Enviar Candidatura
                   <Send className="ml-2 h-5 w-5" />
                 </Button>
-
-                <p className="text-xs text-muted-foreground">
-                  Aceitamos ficheiros PDF, DOC ou DOCX até {MAX_FILE_MB}MB.
-                </p>
               </form>
             </div>
 
@@ -394,7 +309,7 @@ function openMailSafely(mailtoLink: string, onFail?: () => void) {
                 <CardContent className="p-6">
                   <h3 className="text-xl font-semibold mb-4">Dicas para uma boa candidatura</h3>
                   <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
-                    <li>Garanta que o seu CV está atualizado e legível (idealmente em PDF).</li>
+                    <li>Prepare o CV em PDF (ideal).</li>
                     <li>Resuma a experiência mais relevante para a função.</li>
                     <li>Indique disponibilidade e certificações (ex.: condução de máquinas, fitofármacos).</li>
                   </ul>

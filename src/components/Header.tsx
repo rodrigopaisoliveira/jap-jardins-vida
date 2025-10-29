@@ -21,7 +21,7 @@ const Header = () => {
     { name: "Sobre Nós", path: "/sobre" },
     { name: "Contactos", path: "/contactos" },
     // NOVO: Currículos
-    { name: "Currículos", path: "/curriculos" },
+    { name: "Recrutamento", path: "/curriculos" },
   ];
 
   // Função para lidar com o clique nos links de navegação
