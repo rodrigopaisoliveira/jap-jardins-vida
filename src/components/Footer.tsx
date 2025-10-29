@@ -1,7 +1,30 @@
-import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Clock, Leaf } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Phone, MapPin, Clock } from "lucide-react";
+import logo from "@/assets/logo.png";
+import { useEffect } from "react";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
+  // Função para rolar suavemente até ao topo
+  const scrollToTopSmooth = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // Função que redireciona e faz scroll suave
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate("/");
+
+    // Aguarda um pequeno tempo para garantir o carregamento da home antes do scroll
+    setTimeout(() => {
+      scrollToTopSmooth();
+    }, 100);
+  };
+
   return (
     <footer className="bg-secondary border-t mt-20">
       <div className="container mx-auto px-4 py-12">
@@ -9,10 +32,14 @@ const Footer = () => {
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-                <Leaf className="h-6 w-6 text-primary-foreground" />
-              </div>
-              <span className="font-bold text-lg text-primary">JAP Jardins com Vida</span>
+              {/* LOGO com scroll suave */}
+              <Link to="/" onClick={handleLogoClick} className="flex items-center gap-2">
+                <img
+                  src={logo}
+                  alt="JAP Jardins com Vida"
+                  className="h-14 w-auto object-contain cursor-pointer"
+                />
+              </Link>
             </div>
             <p className="text-muted-foreground mb-4">
               Empresa especializada em serviços de jardinagem e manutenção de piscinas em Palmela.
@@ -46,6 +73,7 @@ const Footer = () => {
               </li>
             </ul>
           </div>
+
           {/* Contact Info */}
           <div>
             <h3 className="font-semibold text-lg mb-4">Contactos</h3>

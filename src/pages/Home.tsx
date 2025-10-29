@@ -1,10 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Leaf, Droplets, Scissors, Trees, Sparkles, Wrench } from "lucide-react";
 import ServiceCard from "@/components/ServiceCard";
 import heroImage from "@/assets/hero-garden.jpg";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  // Função para scroll suave
+  const scrollToTopSmooth = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // Lidar com clique no botão "Solicitar Orçamento"
+  const handleSolicitarOrcamento = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate("/contactos");
+    setTimeout(() => scrollToTopSmooth(), 100);
+  };
+
   const featuredServices = [
     {
       icon: Scissors,
@@ -120,14 +137,21 @@ const Home = () => {
               Estamos prontos para dar vida ao seu espaço exterior!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" asChild className="text-lg">
-                <Link to="/contactos">Contactar Agora</Link>
+              {/* 👇 Atualizado: agora faz scroll suave para o topo da página de contactos */}
+              <Button
+                size="lg"
+                variant="secondary"
+                onClick={handleSolicitarOrcamento}
+                className="text-lg"
+              >
+                Solicitar Orçamento
               </Button>
+
               <Button 
-                  size="lg" 
-                  variant="outline" 
-                  asChild 
-                  className="text-lg bg-transparent border-white text-white hover:bg-white/20 hover:border-white" // MODIFICADO
+                size="lg" 
+                variant="outline" 
+                asChild 
+                className="text-lg bg-transparent border-white text-white hover:bg-white/20 hover:border-white"
               >
                 <a href="tel:962814314">Ligar: 962 814 314</a>
               </Button>   

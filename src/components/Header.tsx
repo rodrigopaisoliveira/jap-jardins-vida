@@ -1,16 +1,21 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Leaf } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo.png"; // imagem local
 
-// Função auxiliar para rolar para o topo
-const scrollToTop = () => {
-  window.scrollTo(0, 0);
+// Função auxiliar para rolar suavemente para o topo
+const scrollToTopSmooth = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
 };
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -20,29 +25,40 @@ const Header = () => {
     { name: "Galeria", path: "/galeria" },
     { name: "Sobre Nós", path: "/sobre" },
     { name: "Contactos", path: "/contactos" },
-    // NOVO: Currículos
     { name: "Recrutamento", path: "/curriculos" },
   ];
 
-  // Função para lidar com o clique nos links de navegação
+  // Fecha o menu e faz scroll suave ao clicar num link
   const handleNavLinkClick = () => {
-    scrollToTop();
+    scrollToTopSmooth();
     setIsMenuOpen(false);
+  };
+
+  // Faz scroll suave ao clicar no logo e volta à página principal
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => scrollToTopSmooth(), 100);
+    } else {
+      scrollToTopSmooth();
+    }
   };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        {/* LOGO */}
+      <div className="container mx-auto flex h-20 items-center justify-between px-4">
+        {/* LOGO - com scroll suave */}
         <Link
           to="/"
-          onClick={handleNavLinkClick}
-          className="flex items-center gap-2 font-bold text-xl"
+          onClick={handleLogoClick}
+          className="flex items-center gap-2"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-            <Leaf className="h-6 w-6 text-primary-foreground" />
-          </div>
-          <span className="text-primary">JAP Jardins com Vida</span>
+          <img
+            src={logo}
+            alt="JAP Jardins com Vida"
+            className="h-14 w-auto object-contain cursor-pointer"
+          />
         </Link>
 
         {/* Desktop Navigation */}
