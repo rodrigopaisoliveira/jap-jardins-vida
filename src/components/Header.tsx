@@ -20,22 +20,22 @@ const Header = () => {
     { name: "Galeria", path: "/galeria" },
     { name: "Sobre Nós", path: "/sobre" },
     { name: "Contactos", path: "/contactos" },
+    // NOVO: Currículos
+    { name: "Currículos", path: "/curriculos" },
   ];
 
   // Função para lidar com o clique nos links de navegação
   const handleNavLinkClick = () => {
-    // 1. Rola para o topo (isto é ativado imediatamente)
     scrollToTop();
-    // 2. Fecha o menu (apenas no mobile)
     setIsMenuOpen(false);
   };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        {/* LOGO: Adiciona a função de clique */}
-        <Link 
-          to="/" 
+        {/* LOGO */}
+        <Link
+          to="/"
           onClick={handleNavLinkClick}
           className="flex items-center gap-2 font-bold text-xl"
         >
@@ -51,8 +51,7 @@ const Header = () => {
             <Link
               key={link.path}
               to={link.path}
-              // LINKS DESKTOP: Adiciona a função de clique
-              onClick={handleNavLinkClick} 
+              onClick={handleNavLinkClick}
               className={`text-sm font-medium transition-colors hover:text-primary ${
                 isActive(link.path) ? "text-primary" : "text-muted-foreground"
               }`}
@@ -61,7 +60,6 @@ const Header = () => {
             </Link>
           ))}
           <Button asChild className="ml-4">
-            {/* BOTÃO PEDIR ORÇAMENTO DESKTOP: Adiciona a função de clique */}
             <Link to="/contactos" onClick={handleNavLinkClick}>
               Pedir Orçamento
             </Link>
@@ -89,7 +87,6 @@ const Header = () => {
             <Link
               key={link.path}
               to={link.path}
-              // LINKS MOBILE: Usa a função de clique combinada
               onClick={handleNavLinkClick}
               className={`block py-2 text-sm font-medium transition-colors hover:text-primary ${
                 isActive(link.path) ? "text-primary" : "text-muted-foreground"
@@ -99,7 +96,6 @@ const Header = () => {
             </Link>
           ))}
           <Button asChild className="w-full mt-4">
-            {/* BOTÃO PEDIR ORÇAMENTO MOBILE: Usa a função de clique combinada */}
             <Link to="/contactos" onClick={handleNavLinkClick}>
               Pedir Orçamento
             </Link>

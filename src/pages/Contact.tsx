@@ -15,23 +15,65 @@ const Contact = () => {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // For now, just show a success message
-    toast({
-      title: "Mensagem Enviada!",
-      description: "Entraremos em contacto consigo brevemente.",
-    });
-    
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      message: "",
-    });
-  };
+const handleSubmit = (e: React.FormEvent) => {
+  e.preventDefault();
+
+  // Endereço da empresa
+  const destinatario = "info@japjardins.pt"; // <-- coloca o email real da empresa
+  const assunto = encodeURIComponent("Pedido de Orçamento - JAP Jardins com Vida");
+  const corpo = encodeURIComponent(
+    `Olá JAP Jardins com Vida,
+
+O meu nome é ${formData.name}.
+Email: ${formData.email}
+Telefone: ${formData.phone || "não indicado"}
+
+Mensagem:
+${formData.message}
+
+Obrigado,
+${formData.name}`
+  );
+
+  // Abre o cliente de email do utilizador
+  window.location.href = `mailto:${destinatario}?subject=${assunto}&body=${corpo}`;
+
+  // Mostra feedback visual
+  toast({
+    title: "A preparar email…",
+    description: "O seu cliente de email será aberto para enviar a mensagem.",
+  });
+
+  // Limpa o formulário
+  setFormData({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+};
+
+function openMailSafely(mailtoLink: string, onFail?: () => void) {
+  try {
+    // Tenta abrir o e-mail via navegador
+    window.location.href = mailtoLink;
+
+    // Alguns browsers bloqueiam — tentamos via click programático também
+    const a = document.createElement("a");
+    a.href = mailtoLink;
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Se após ~1s o utilizador ainda está na mesma página, mostra fallback
+    setTimeout(() => {
+      onFail?.();
+    }, 1200);
+  } catch {
+    onFail?.();
+  }
+}
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -114,9 +156,9 @@ const Contact = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <div>
-              <h2 className="text-3xl font-bold mb-6">Envie-nos uma Mensagem</h2>
+              <h2 className="text-3xl font-bold mb-6">Solicitar orçamento</h2>
               <p className="text-muted-foreground mb-8">
-                Preencha o formulário abaixo e entraremos em contacto consigo o mais breve possível.
+                Preencha o formulário abaixo — será aberto um email já preparado para nós.
               </p>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
@@ -174,7 +216,7 @@ const Contact = () => {
                   />
                 </div>
                 <Button type="submit" size="lg" className="w-full">
-                  Enviar Mensagem
+                  Solicitar Orçamento
                   <Send className="ml-2 h-5 w-5" />
                 </Button>
               </form>
@@ -228,7 +270,7 @@ const Contact = () => {
                           rel="noopener noreferrer"
                           className="text-sm text-muted-foreground hover:text-primary"
                         >
-                          Enviar mensagem
+                          Solicitar Orçamento via WhatsApp
                         </a>
                       </div>
                     </div>

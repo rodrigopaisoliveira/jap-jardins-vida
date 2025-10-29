@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HashRouter, Routes, Route } from "react-router-dom"; // <-- HashRouter AQUI
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -12,6 +12,7 @@ import Gallery from "./pages/Gallery";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import Curriculos from "@/pages/Curriculos";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +21,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <HashRouter> {/* <-- HashRouter AQUI */}
+      <HashRouter>
         <div className="flex flex-col min-h-screen">
           <Header />
           <main className="flex-grow">
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="/galeria" element={<Gallery />} />
               <Route path="/sobre" element={<About />} />
               <Route path="/contactos" element={<Contact />} />
+              <Route path="/curriculos" element={<Curriculos />} /> {/* <-- ADICIONADO */}
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
@@ -37,7 +39,7 @@ const App = () => (
           <Footer />
           <WhatsAppButton />
         </div>
-      </HashRouter> {/* <-- HashRouter AQUI */}
+      </HashRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );
