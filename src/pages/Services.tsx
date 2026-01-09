@@ -1,7 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import { Scissors, Leaf, Trees, Sprout, Droplets, Flower, Wrench, Waves, Sparkles } from "lucide-react";
 import ServiceCard from "@/components/ServiceCard";
+import { Button } from "@/components/ui/button"; // Importação do botão da UI
 
 const Services = () => {
+  const navigate = useNavigate();
+
+  // Função para navegar e garantir o scroll no topo
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    window.scrollTo(0, 0);
+  };
+
   const gardenServices = [
     {
       icon: Scissors,
@@ -136,18 +146,23 @@ const Services = () => {
               Contacte-nos para discutir as suas necessidades específicas e receber um orçamento à medida.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="tel:962814314"
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8"
+              {/* Botão de Ligar (Externo) */}
+              <Button
+                size="lg"
+                className="h-11 px-8 text-primary-foreground"
+                onClick={() => window.location.href = "tel:962814314"}
               >
                 Ligar: 962 814 314
-              </a>
-              <a
-                href="/contactos"
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-11 px-8"
+              </Button>
+
+              {/* Botão Solicitar Orçamento (Interno) */}
+              <Button
+                variant="outline"
+                className="h-11 px-8"
+                onClick={() => handleNavigation("/contactos")}
               >
                 Solicitar Orçamento
-              </a>
+              </Button>
             </div>
           </div>
         </div>
