@@ -1,10 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button"; // Importamos o componente Button
 import heroImage from "@/assets/hero-garden.jpg";
 import gardenService from "@/assets/garden-service.jpg";
 import poolService from "@/assets/pool-service.jpg";
 import landscaping from "@/assets/landscaping.jpg";
 
 const Gallery = () => {
+  const navigate = useNavigate();
+
+  // Função para navegar e garantir o scroll no topo
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    window.scrollTo(0, 0);
+  };
+
   const projects = [
     {
       image: heroImage,
@@ -84,7 +94,7 @@ const Gallery = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA Section - CORRIGIDA */}
       <section className="py-20 bg-secondary">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
@@ -93,18 +103,26 @@ const Gallery = () => {
               Entre em contacto connosco para criar o jardim dos seus sonhos ou manter a sua piscina impecável.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/contactos"
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8"
+              
+              {/* Botão Solicitar Orçamento corrigido com onClick */}
+              <Button
+                size="lg"
+                onClick={() => handleNavigation("/contactos")}
+                className="text-lg px-8"
               >
                 Solicitar Orçamento Grátis
-              </a>
-              <a
-                href="tel:962814314"
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-11 px-8"
+              </Button>
+
+              {/* Botão Ligar Agora mantido como funcionalidade de telefone */}
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => window.location.href = "tel:962814314"}
+                className="text-lg px-8"
               >
                 Ligar Agora
-              </a>
+              </Button>
+
             </div>
           </div>
         </div>

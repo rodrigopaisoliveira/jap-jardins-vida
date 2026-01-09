@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Leaf, Droplets, Scissors, Trees, Sparkles, Wrench } from "lucide-react";
 import ServiceCard from "@/components/ServiceCard";
@@ -7,64 +7,25 @@ import heroImage from "@/assets/hero-garden.jpg";
 const Home = () => {
   const navigate = useNavigate();
 
-  // Função para scroll suave
-  const scrollToTopSmooth = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  // Lidar com clique no botão "Solicitar Orçamento"
-  const handleSolicitarOrcamento = (e: React.MouseEvent) => {
-    e.preventDefault();
-    navigate("/contactos");
-    setTimeout(() => scrollToTopSmooth(), 100);
+  // Função de navegação agora é simples, o ScrollToTop no App.tsx trata do resto
+  const handleNavigation = (path: string) => {
+    navigate(path);
   };
 
   const featuredServices = [
-    {
-      icon: Scissors,
-      title: "Manutenção de Jardins",
-      description: "Corte de relva, escarificação e limpeza completa dos seus espaços verdes.",
-    },
-    {
-      icon: Droplets,
-      title: "Tratamento de Piscinas",
-      description: "Manutenção completa, limpeza e tratamento químico da sua piscina.",
-    },
-    {
-      icon: Trees,
-      title: "Poda e Jardinagem",
-      description: "Poda profissional de árvores e arbustos, mantendo a saúde das plantas.",
-    },
-    {
-      icon: Leaf,
-      title: "Instalação de Relva",
-      description: "Colocação de tapetes de relva natural ou artificial com garantia.",
-    },
-    {
-      icon: Sparkles,
-      title: "Projetos Paisagísticos",
-      description: "Criação e remodelação de espaços verdes personalizados.",
-    },
-    {
-      icon: Wrench,
-      title: "Construção de Piscinas",
-      description: "Projeto e construção de piscinas com materiais de qualidade.",
-    },
+    { icon: Scissors, title: "Manutenção de Jardins", description: "Corte de relva, escarificação e limpeza completa dos seus espaços verdes." },
+    { icon: Droplets, title: "Tratamento de Piscinas", description: "Manutenção completa, limpeza e tratamento químico da sua piscina." },
+    { icon: Trees, title: "Poda e Jardinagem", description: "Poda profissional de árvores e arbustos, mantendo a saúde das plantas." },
+    { icon: Leaf, title: "Instalação de Relva", description: "Colocação de tapetes de relva natural ou artificial com garantia." },
+    { icon: Sparkles, title: "Projetos Paisagísticos", description: "Criação e remodelação de espaços verdes personalizados." },
+    { icon: Wrench, title: "Construção de Piscinas", description: "Projeto e construção de piscinas com materiais de qualidade." },
   ];
 
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url(${heroImage})`,
-          }}
-        >
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${heroImage})` }}>
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
         </div>
         
@@ -79,14 +40,18 @@ const Home = () => {
               Transformamos o seu espaço exterior num verdadeiro paraíso verde.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" asChild className="text-lg">
-                <Link to="/contactos">
-                  Solicitar Orçamento Grátis
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+              <Button size="lg" className="text-lg" onClick={() => handleNavigation("/contactos")}>
+                Solicitar Orçamento Grátis
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline" asChild className="text-lg bg-white/10 backdrop-blur border-white/20 text-white hover:bg-white/20">
-                <Link to="/servicos">Ver Serviços</Link>
+
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="text-lg bg-white/10 backdrop-blur border-white/20 text-white hover:bg-white/20"
+                onClick={() => handleNavigation("/servicos")}
+              >
+                Ver Serviços
               </Button>
             </div>
           </div>
@@ -115,11 +80,9 @@ const Home = () => {
           </div>
 
           <div className="text-center">
-            <Button size="lg" asChild>
-              <Link to="/servicos">
-                Ver Todos os Serviços
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+            <Button size="lg" onClick={() => handleNavigation("/servicos")}>
+              Ver Todos os Serviços
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </div>
@@ -134,14 +97,12 @@ const Home = () => {
             </h2>
             <p className="text-xl mb-8 opacity-90">
               Entre em contacto connosco hoje mesmo e solicite um orçamento gratuito.
-              Estamos prontos para dar vida ao seu espaço exterior!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {/* 👇 Atualizado: agora faz scroll suave para o topo da página de contactos */}
               <Button
                 size="lg"
                 variant="secondary"
-                onClick={handleSolicitarOrcamento}
+                onClick={() => handleNavigation("/contactos")}
                 className="text-lg"
               >
                 Solicitar Orçamento
@@ -150,10 +111,10 @@ const Home = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                asChild 
                 className="text-lg bg-transparent border-white text-white hover:bg-white/20 hover:border-white"
+                onClick={() => window.location.href = "tel:962814314"}
               >
-                <a href="tel:962814314">Ligar: 962 814 314</a>
+                Ligar: 962 814 314
               </Button>   
             </div>
           </div>
@@ -179,7 +140,7 @@ const Home = () => {
               </div>
               <h3 className="text-xl font-semibold mb-2">Qualidade Garantida</h3>
               <p className="text-muted-foreground">
-                Utilizamos produtos e equipamentos de alta qualidade em todos os serviços
+                Utilizamos produtos e equipamentos de alta qualidade
               </p>
             </div>
             <div className="text-center animate-fade-in">
@@ -188,7 +149,7 @@ const Home = () => {
               </div>
               <h3 className="text-xl font-semibold mb-2">Dedicação Total</h3>
               <p className="text-muted-foreground">
-                Comprometidos com a satisfação e confiança dos nossos clientes
+                Comprometidos com a satisfação dos nossos clientes
               </p>
             </div>
           </div>

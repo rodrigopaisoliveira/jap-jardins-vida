@@ -2,7 +2,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route, useLocation } from "react-router-dom"; // Adicionado useLocation
+import { useEffect } from "react"; // Adicionado useEffect
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -14,6 +15,20 @@ import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Curriculos from "@/pages/Curriculos";
 
+// Sub-componente para gerir o scroll automaticamente
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Força o scroll para o topo 0,0 instantaneamente
+    window.scrollTo(0, 0);
+    // Backup para garantir em todos os browsers
+    document.documentElement.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -22,6 +37,9 @@ const App = () => (
       <Toaster />
       <Sonner />
       <HashRouter>
+        {/* O componente ScrollToTop deve estar dentro do Router */}
+        <ScrollToTop /> 
+        
         <div className="flex flex-col min-h-screen">
           <Header />
           <main className="flex-grow">
@@ -31,8 +49,7 @@ const App = () => (
               <Route path="/galeria" element={<Gallery />} />
               <Route path="/sobre" element={<About />} />
               <Route path="/contactos" element={<Contact />} />
-              <Route path="/curriculos" element={<Curriculos />} /> {/* <-- ADICIONADO */}
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="/curriculos" element={<Curriculos />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
