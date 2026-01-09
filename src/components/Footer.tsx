@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Phone, MapPin, Clock } from "lucide-react";
+import { Phone, MapPin, Clock, Mail } from "lucide-react"; 
 import logo from "@/assets/logo.png";
-import { useEffect } from "react";
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -14,12 +13,10 @@ const Footer = () => {
     });
   };
 
-  // Função que redireciona e faz scroll suave
-  const handleLogoClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    navigate("/");
-
-    // Aguarda um pequeno tempo para garantir o carregamento da home antes do scroll
+  // Função genérica para navegar e fazer scroll
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    // Um pequeno timeout garante que a mudança de rota começou antes do scroll
     setTimeout(() => {
       scrollToTopSmooth();
     }, 100);
@@ -29,17 +26,20 @@ const Footer = () => {
     <footer className="bg-secondary border-t mt-20">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              {/* LOGO com scroll suave */}
-              <Link to="/" onClick={handleLogoClick} className="flex items-center gap-2">
+              <button 
+                onClick={() => handleNavigation("/")} 
+                className="flex items-center gap-2 outline-none"
+              >
                 <img
                   src={logo}
-                  alt="JAP Jardins com Vida"
+                  alt="JAP Serviços Manutencão Piscinas e Jardins"
                   className="h-14 w-auto object-contain cursor-pointer"
                 />
-              </Link>
+              </button>
             </div>
             <p className="text-muted-foreground mb-4">
               Empresa especializada em serviços de jardinagem e manutenção de piscinas em Palmela.
@@ -47,29 +47,41 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links - ATUALIZADOS */}
           <div>
             <h3 className="font-semibold text-lg mb-4">Links Rápidos</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-muted-foreground hover:text-primary transition-colors">
+                <button 
+                  onClick={() => handleNavigation("/")} 
+                  className="text-muted-foreground hover:text-primary transition-colors text-left"
+                >
                   Início
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/servicos" className="text-muted-foreground hover:text-primary transition-colors">
+                <button 
+                  onClick={() => handleNavigation("/servicos")} 
+                  className="text-muted-foreground hover:text-primary transition-colors text-left"
+                >
                   Serviços
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/galeria" className="text-muted-foreground hover:text-primary transition-colors">
+                <button 
+                  onClick={() => handleNavigation("/galeria")} 
+                  className="text-muted-foreground hover:text-primary transition-colors text-left"
+                >
                   Galeria
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/sobre" className="text-muted-foreground hover:text-primary transition-colors">
+                <button 
+                  onClick={() => handleNavigation("/sobre")} 
+                  className="text-muted-foreground hover:text-primary transition-colors text-left"
+                >
                   Sobre Nós
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
@@ -84,10 +96,21 @@ const Footer = () => {
                   962 814 314
                 </a>
               </li>
+
+              <li className="flex items-start gap-2">
+                <Mail className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                <a 
+                  href="mailto:jap.jardinscomvida@hotmail.com" 
+                  className="text-muted-foreground hover:text-primary transition-colors break-all"
+                >
+                  jap.jardinscomvida@hotmail.com
+                </a>
+              </li>
+
               <li className="flex items-start gap-2">
                 <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                 <a
-                  href="https://www.google.com/maps?q=Centro+Comercial+Santiago,+R.+Lúcio+Borges+da+Costa,+Loja+12,+2950-255+Palmela"
+                  href="https://maps.google.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-primary transition-colors"
@@ -97,6 +120,7 @@ const Footer = () => {
                   2950-255 Palmela
                 </a>
               </li>
+
               <li className="flex items-start gap-2">
                 <Clock className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                 <span className="text-muted-foreground">
@@ -109,7 +133,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground text-sm">
-          <p>© {new Date().getFullYear()} JAP Jardins com Vida. Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} JAP Serviços Manutencão Piscinas e Jardins. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>

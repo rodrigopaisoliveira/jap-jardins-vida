@@ -19,10 +19,10 @@ const handleSubmit = (e: React.FormEvent) => {
   e.preventDefault();
 
   // Endereço da empresa
-  const destinatario = "info@japjardins.pt"; // <-- coloca o email real da empresa
-  const assunto = encodeURIComponent("Pedido de Orçamento - JAP Jardins com Vida");
+  const destinatario = "jap.jardinscomvida@hotmail.com"; // <-- coloca o email real da empresa
+  const assunto = encodeURIComponent("Pedido de Orçamento - JAP Serviços Manutencão Piscinas e Jardins");
   const corpo = encodeURIComponent(
-    `Olá JAP Jardins com Vida,
+    `Olá JAP Serviços Manutencão Piscinas e Jardins,
 
 O meu nome é ${formData.name}.
 Email: ${formData.email}
@@ -82,7 +82,7 @@ function openMailSafely(mailtoLink: string, onFail?: () => void) {
     });
   };
 
-  const contactInfo = [
+const contactInfo = [
     {
       icon: Phone,
       title: "Telefone",
@@ -90,18 +90,18 @@ function openMailSafely(mailtoLink: string, onFail?: () => void) {
       link: "tel:962814314",
     },
     {
-      icon: MapPin,
-      title: "Morada",
-      content: "Centro Comercial Santiago, R. Lúcio Borges da Costa, Loja 12, 2950-255 Palmela",
-      // Usar um link real do Google Maps para a morada
-      link: "https://www.google.com/maps/search/?api=1&query=Centro+Comercial+Santiago,+R.+L%C3%BAcio+Borges+da+Costa,+Loja+12,+2950-255+Palmela",
-    },
-    {
       icon: Clock,
       title: "Horário",
       content: "Segunda a Sexta: 08:00 – 20:00\nSábado e Domingo: Encerrado",
       link: null,
     },
+    {
+      icon: Mail, // Certifica-te que importaste o ícone Mail do lucide-react
+      title: "Email",
+      content: "jap.jardinscomvida@hotmail.com",
+      link: "mailto:jap.jardinscomvida@hotmail.com",
+    },
+
   ];
 
   return (
@@ -174,6 +174,7 @@ function openMailSafely(mailtoLink: string, onFail?: () => void) {
                     placeholder="O seu nome"
                   />
                 </div>
+                
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium mb-2">
                     Email *
@@ -185,7 +186,7 @@ function openMailSafely(mailtoLink: string, onFail?: () => void) {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    placeholder="seu@email.com"
+                    placeholder="exemplo@email.com"
                   />
                 </div>
                 <div>
@@ -236,7 +237,7 @@ function openMailSafely(mailtoLink: string, onFail?: () => void) {
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Localização JAP Jardins com Vida"
+                    title="Localização JAP Serviços Manutencão Piscinas e Jardins"
                   />
                 </div>
               </div>
@@ -245,6 +246,7 @@ function openMailSafely(mailtoLink: string, onFail?: () => void) {
                 <CardContent className="p-6">
                   <h3 className="text-xl font-semibold mb-4">Outras Formas de Contacto</h3>
                   <div className="space-y-4">
+                    {/* Telefone */}
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
                         <Phone className="h-5 w-5 text-primary" />
@@ -256,6 +258,8 @@ function openMailSafely(mailtoLink: string, onFail?: () => void) {
                         </a>
                       </div>
                     </div>
+
+                    {/* WhatsApp */}
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#25D366]/10">
                         <svg className="h-5 w-5 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24">
@@ -274,6 +278,23 @@ function openMailSafely(mailtoLink: string, onFail?: () => void) {
                         </a>
                       </div>
                     </div>
+
+                    {/* Email (Adicionado aqui) */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                        <Mail className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium">Enviar Email</p>
+                        <a 
+                          href="mailto:jap.jardinscomvida@hotmail.com" 
+                          className="text-sm text-muted-foreground hover:text-primary"
+                        >
+                          jap.jardinscomvida@hotmail.com
+                        </a>
+                      </div>
+                    </div>
+
                   </div>
                 </CardContent>
               </Card>

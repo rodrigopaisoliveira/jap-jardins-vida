@@ -1,9 +1,31 @@
 import { Heart, Target, Award, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import { ArrowRight } from "lucide-react"; 
+import { Link } from "react-router-dom"; // Importação necessária para o roteamento// Certifica-te de ter esta importação no topo
+  const Counter = ({ end, duration = 2000 }) => {
+    const [count, setCount] = useState(0);
 
+    useEffect(() => {
+      let start = 0;
+      const increment = end / (duration / 16);
+      const timer = setInterval(() => {
+        start += increment;
+        if (start >= end) {
+          setCount(end);
+          clearInterval(timer);
+        } else {
+          setCount(Math.floor(start));
+        }
+      }, 16);
+      return () => clearInterval(timer);
+    }, [end, duration]);
+
+    return <span>{count}</span>;
+  };
 const About = () => {
   const values = [
-    {
+  {
       icon: Heart,
       title: "Paixão pelo Verde",
       description: "Amamos o que fazemos e isso reflete-se na qualidade de cada projeto que realizamos.",
@@ -15,8 +37,8 @@ const About = () => {
     },
     {
       icon: Award,
-      title: "Profissionalismo",
-      description: "Equipa qualificada e experiente, sempre pronta para superar as suas expectativas.",
+      title: "+30 Anos de Experiência",
+      description: "Três décadas de conhecimento técnico e dedicação constante a cuidar dos seus espaços.",
     },
     {
       icon: Users,
@@ -28,13 +50,26 @@ const About = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header Section */}
-      <section className="bg-gradient-to-br from-primary to-accent text-primary-foreground py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-6 animate-fade-in">Sobre Nós</h1>
-          <p className="text-xl max-w-3xl mx-auto opacity-90 animate-slide-up">
-            Conheça a empresa que cuida dos seus espaços verdes com dedicação e profissionalismo
+      <section className="bg-gradient-to-br from-primary to-accent text-primary-foreground py-24 relative overflow-hidden">
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-2 animate-slide-up tracking-tight">
+            Sobre Nós
+          </h1>
+          
+          <div className="inline-block px-5 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/10 animate-fade-in">
+            {/* Alterado para text-base (mobile) e text-lg (desktop) */}
+            <span className="text-base md:text-lg font-semibold tracking-wide">
+              +<Counter end={30} /> Anos de Experiência
+            </span>
+          </div>
+
+          <p className="mt-6 text-xl md:text-2xl max-w-3xl mx-auto opacity-90 animate-slide-up leading-relaxed">
+            Especialistas em transformar e cuidar dos seus espaços verdes com a experiência de três décadas.
           </p>
         </div>
+
+        {/* Elemento visual decorativo de fundo */}
+        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
       </section>
 
       {/* Company Story */}
@@ -44,22 +79,15 @@ const About = () => {
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold mb-6 text-primary">A Nossa História</h2>
               <div className="space-y-6 text-lg text-muted-foreground text-left">
-                <p>
-                  A <strong className="text-foreground">JAP Jardins com Vida</strong> é uma empresa especializada em serviços de jardinagem
-                  e manutenção de piscinas, localizada em Palmela. Nascemos da paixão pela natureza e do desejo de
-                  transformar espaços exteriores em verdadeiros oásis de tranquilidade e beleza.
-                </p>
-                <p>
-                  Com anos de experiência no sector, a nossa equipa de profissionais qualificados está preparada para
-                  oferecer soluções completas e personalizadas para cada cliente. Desde a manutenção regular de jardins
-                  até à construção de piscinas, passando por projetos paisagísticos complexos, fazemos tudo com a mesma
-                  dedicação e atenção ao detalhe.
-                </p>
-                <p>
-                  Utilizamos equipamentos modernos e produtos de qualidade certificada, garantindo resultados que
-                  superam as expectativas. O nosso compromisso é não apenas cuidar dos seus espaços verdes, mas dar-lhes
-                  verdadeira vida e personalidade.
-                </p>
+              <p>
+                A <strong className="text-primary">JAP Serviços Manutenção Piscinas e Jardins</strong> é uma empresa com uma sólida trajetória de <strong className="text-primary">mais de 30 anos</strong>, especializada em serviços de jardinagem e manutenção de piscinas em Palmela. Nascemos da paixão pela natureza e do desejo de transformar espaços exteriores em verdadeiros oásis de tranquilidade e beleza.
+              </p>
+              <p>
+                Com o conhecimento acumulado no mercado, a nossa <strong className="text-primary">equipa de profissionais qualificados</strong> está preparada para oferecer soluções completas e personalizadas. Desde a manutenção regular até projetos complexos, aplicamos o saber de quem conhece o setor com total dedicação.
+              </p>
+              <p>
+                Utilizamos equipamentos modernos e produtos de <strong className="text-primary">qualidade certificada</strong>, garantindo resultados que superam as expectativas. O nosso compromisso é não apenas cuidar dos seus espaços verdes, mas dar-lhes verdadeira <strong className="text-primary">vida, longevidade e personalidade</strong>.
+              </p>
               </div>
             </div>
           </div>
@@ -92,100 +120,114 @@ const About = () => {
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold mb-12 text-center text-primary">Porquê Escolher-nos?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-2 h-2 bg-primary rounded-full mt-2" />
-                  <div>
-                    <h3 className="font-semibold text-lg mb-1">Experiência Comprovada</h3>
-                    <p className="text-muted-foreground">
-                      Anos de experiência no sector de jardinagem e manutenção de piscinas
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-2 h-2 bg-primary rounded-full mt-2" />
-                  <div>
-                    <h3 className="font-semibold text-lg mb-1">Equipa Qualificada</h3>
-                    <p className="text-muted-foreground">
-                      Profissionais formados e certificados para garantir a qualidade do serviço
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-2 h-2 bg-primary rounded-full mt-2" />
-                  <div>
-                    <h3 className="font-semibold text-lg mb-1">Equipamento Moderno</h3>
-                    <p className="text-muted-foreground">
-                      Utilizamos as mais recentes ferramentas e tecnologias do sector
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-2 h-2 bg-accent rounded-full mt-2" />
-                  <div>
-                    <h3 className="font-semibold text-lg mb-1">Atendimento Personalizado</h3>
-                    <p className="text-muted-foreground">
-                      Cada projeto é único e merece atenção e cuidado especiais
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-2 h-2 bg-accent rounded-full mt-2" />
-                  <div>
-                    <h3 className="font-semibold text-lg mb-1">Produtos de Qualidade</h3>
-                    <p className="text-muted-foreground">
-                      Apenas utilizamos produtos certificados e de marcas reconhecidas
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-2 h-2 bg-accent rounded-full mt-2" />
-                  <div>
-                    <h3 className="font-semibold text-lg mb-1">Compromisso Ambiental</h3>
-                    <p className="text-muted-foreground">
-                      Práticas sustentáveis que respeitam o meio ambiente
-                    </p>
-                  </div>
-                </div>
-              </div>
+{/* Why Choose Us */}
+<section className="py-20 bg-background">
+  <div className="container mx-auto px-4">
+    <div className="max-w-4xl mx-auto">
+      <h2 className="text-4xl font-bold mb-12 text-center text-primary">Porquê Escolher-nos?</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="space-y-4">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-2 h-2 bg-primary rounded-full mt-2" />
+            <div>
+              <h3 className="font-semibold text-lg mb-1">+30 Anos de Experiência</h3>
+              <p className="text-muted-foreground">
+                Três décadas de excelência e conhecimento profundo no sector de jardinagem e piscinas.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-2 h-2 bg-primary rounded-full mt-2" />
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Equipa Qualificada</h3>
+              <p className="text-muted-foreground">
+                Profissionais formados e certificados para garantir a qualidade do serviço.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-2 h-2 bg-primary rounded-full mt-2" />
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Equipamento Moderno</h3>
+              <p className="text-muted-foreground">
+                Utilizamos as mais recentes ferramentas e tecnologias do sector.
+              </p>
             </div>
           </div>
         </div>
-      </section>
+        <div className="space-y-4">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-2 h-2 bg-accent rounded-full mt-2" />
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Atendimento Personalizado</h3>
+              <p className="text-muted-foreground">
+                Cada projeto é único e merece atenção e cuidado especiais.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-2 h-2 bg-accent rounded-full mt-2" />
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Produtos de Qualidade</h3>
+              <p className="text-muted-foreground">
+                Apenas utilizamos produtos certificados e de marcas reconhecidas.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-2 h-2 bg-accent rounded-full mt-2" />
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Compromisso Ambiental</h3>
+              <p className="text-muted-foreground">
+                Práticas sustentáveis que respeitam o meio ambiente.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary to-accent text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold mb-6">Vamos Trabalhar Juntos?</h2>
-            <p className="text-xl mb-8 opacity-90">
-              Entre em contacto connosco e descubra como podemos transformar o seu espaço exterior
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/contactos"
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-primary hover:bg-white/90 h-11 px-8"
-              >
-                Pedir Orçamento
-              </a>
-              <a
-                href="tel:962814314"
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-white/30 text-white hover:bg-white/10 h-11 px-8"
-              >
-                Ligar: 962 814 314
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+<section className="py-20 bg-gradient-to-br from-primary to-accent text-primary-foreground">
+  <div className="container mx-auto px-4 text-center">
+    <div className="max-w-5xl mx-auto">
+      <h2 className="text-4xl font-bold mb-6">Vamos Trabalhar Juntos?</h2>
+      <p className="text-xl mb-8 opacity-90">
+        Entre em contacto connosco e descubra como podemos transformar o seu espaço exterior
+      </p>
+      
+<div className="flex flex-col md:flex-row gap-4 justify-center items-center">
+  {/* Botão Solicitar Orçamento */}
+  <Link
+    to="/contactos" 
+    onClick={() => window.scrollTo(0, 0)}
+    className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-primary hover:bg-white/90 hover:scale-105 active:scale-95 h-11 px-8 w-full md:w-auto group shadow-md"
+  >
+    Solicitar Orçamento
+    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+  </Link>
+  
+  {/* Botão Ligar */}
+  <a
+    href="tel:962814314"
+    className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-primary hover:bg-white/90 hover:scale-105 active:scale-95 h-11 px-8 w-full md:w-auto shadow-md"
+  >
+    Ligar: 962 814 314
+  </a>
+
+  {/* Botão Email */}
+  <a
+    href="mailto:jap.jardinscomvida@hotmail.com"
+    className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-primary hover:bg-white/90 hover:scale-105 active:scale-95 h-11 px-8 w-full md:w-auto shadow-md"
+  >
+    jap.jardinscomvida@hotmail.com
+  </a>
+</div>
+    </div>
+  </div>
+</section>
     </div>
   );
 };

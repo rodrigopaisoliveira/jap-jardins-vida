@@ -71,8 +71,8 @@ const Home = () => {
         <div className="relative z-10 container mx-auto px-4 text-white">
           <div className="max-w-2xl animate-slide-up">
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              Jardins com Vida,<br />
-              <span className="text-accent">Natureza com Arte</span>
+              JAP Serviços Manutencão <br />
+              <span className="text-accent">Piscinas e Jardins</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-gray-200">
               Especialistas em jardinagem e manutenção de piscinas em Palmela.
@@ -81,7 +81,7 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" asChild className="text-lg">
                 <Link to="/contactos">
-                  Pedir Orçamento Grátis
+                  Solicitar Orçamento Grátis
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>

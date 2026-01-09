@@ -56,7 +56,7 @@ const Header = () => {
         >
           <img
             src={logo}
-            alt="JAP Jardins com Vida"
+            alt="JAP Serviços Manutencão Piscinas e Jardins"
             className="h-14 w-auto object-contain cursor-pointer"
           />
         </Link>
@@ -77,7 +77,7 @@ const Header = () => {
           ))}
           <Button asChild className="ml-4">
             <Link to="/contactos" onClick={handleNavLinkClick}>
-              Pedir Orçamento
+              Solicitar Orçamento
             </Link>
           </Button>
         </nav>
@@ -113,7 +113,7 @@ const Header = () => {
           ))}
           <Button asChild className="w-full mt-4">
             <Link to="/contactos" onClick={handleNavLinkClick}>
-              Pedir Orçamento
+              Solicitar Orçamento
             </Link>
           </Button>
         </nav>

@@ -75,10 +75,10 @@ const Curriculos = () => {
       return;
     }
 
-    const destinatario = "info@japjardins.pt"; // <-- substitui se necessário
-    const assunto = encodeURIComponent("Candidatura - JAP Jardins com Vida");
+    const destinatario = "jap.jardinscomvida@hotmail.com"; // <-- substitui se necessário
+    const assunto = encodeURIComponent("Candidatura - JAP Serviços Manutencão Piscinas e Jardins");
     const corpo = encodeURIComponent(
-      `Olá JAP Jardins com Vida,
+      `Olá JAP Serviços Manutencão Piscinas e Jardins,
 
 O meu nome é ${formData.name}.
 Email: ${formData.email}
@@ -107,7 +107,7 @@ ${formData.name}`
       toast({
         title: "Não abriu o cliente de e-mail?",
         description:
-          "Verifique as definições do seu navegador ou copie o endereço info@japjardins.pt.",
+          "Verifique as definições do seu navegador ou copie o endereço jap.jardinscomvida@hotmail.com.",
         variant: "destructive",
       });
     });
@@ -122,7 +122,7 @@ ${formData.name}`
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-6 animate-fade-in">Venha trabalhar connosco!</h1>
           <p className="text-xl max-w-3xl mx-auto opacity-90 animate-slide-up">
-            Junte-se à equipa da JAP Jardins com Vida. Envie o seu currículo e conte-nos porque gostaria de trabalhar connosco.
+            Junte-se à equipa da JAP Serviços Manutencão Piscinas e Jardins. Envie o seu currículo e conte-nos porque gostaria de trabalhar connosco.
           </p>
         </div>
       </section>
@@ -178,7 +178,7 @@ ${formData.name}`
             <div>
               <h2 className="text-3xl font-bold mb-6">Submeter Candidatura</h2>
               <p className="text-muted-foreground mb-8">
-                Preencha o formulário — será aberto um e-mail já preparado para a JAP Jardins com Vida.
+                Preencha o formulário — será aberto um e-mail já preparado para a JAP Serviços Manutencão Piscinas e Jardins.
                 <br />
                 <span className="font-medium">Lembre-se de anexar o seu CV</span> (e carta de apresentação, se aplicável) antes de enviar.
               </p>
@@ -194,7 +194,7 @@ ${formData.name}`
                     <p className="text-sm text-muted-foreground">
                       Por proteção de dados, o envio é feito diretamente por e-mail.
                       Quando submeter o formulário, será automaticamente aberto um e-mail preparado
-                      para a JAP Jardins com Vida — basta anexar o seu <strong>CV</strong> e, se desejar, a sua
+                      para a JAP Serviços Manutencão Piscinas e Jardins — basta anexar o seu <strong>CV</strong> e, se desejar, a sua
                       <strong> carta de apresentação</strong>.                    </p>
                   </div>
                 </CardContent>
@@ -229,7 +229,7 @@ ${formData.name}`
                         value={formData.email}
                         onChange={onChangeText}
                         required
-                        placeholder="seu@email.com"
+                        placeholder="exemplo@email.com"
                         className="pl-9"
                       />
                     </div>
@@ -321,7 +321,7 @@ ${formData.name}`
                   <h3 className="text-xl font-semibold mb-4">Também pode contactar-nos</h3>
                   <div className="space-y-3 text-sm text-muted-foreground">
                     <p>
-                      Email: <a className="hover:text-primary" href="mailto:info@japjardins.pt">info@japjardins.pt</a>
+                      Email: <a className="hover:text-primary" href="mailto:jap.jardinscomvida@hotmail.com">jap.jardinscomvida@hotmail.com</a>
                     </p>
                     <p>
                       Telefone: <a className="hover:text-primary" href="tel:962814314">962 814 314</a>
