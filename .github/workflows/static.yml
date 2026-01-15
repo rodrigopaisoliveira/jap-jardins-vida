@@ -1,9 +1,8 @@
-# Workflow para deploy de apps VITE (React/Vue/Svelte) no GitHub Pages
-name: Deploy Vite App to Pages
+name: Deploy Vite to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -13,41 +12,60 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm' # Adicionado para builds mais rápidos
+          node-version: 20
 
-      - name: Install dependencies
-        run: npm ci # 'npm ci' é mais seguro para ambientes de CI/CD do que 'npm install'
+      # Instala com o gestor certo (npm/pnpm/yarn)
+      - name: Install deps
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            corepack enable
+            pnpm install --frozen-lockfile
+          elif [ -f yarn.lock ]; then
+            corepack enable
+            yarn install --frozen-lockfile
+          elif [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
-      - name: Build project
-        run: npm run build
+      - name: Build
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm run build
+          elif [ -f yarn.lock ]; then
+            yarn build
+          else
+            npm run build
+          fi
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      # SPA fallback p/ evitar 404 em refresh
+      - name: SPA fallback (404.html)
+        run: cp dist/index.html dist/404.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist' # Garante que a pasta 'dist' (gerada pelo Vite) é a enviada
+          path: ./dist
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
-    needs: build # Garante que o deploy só começa após o build terminar com sucesso
     environment:
       name: github-pages
-      url: ${{ steps: deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
